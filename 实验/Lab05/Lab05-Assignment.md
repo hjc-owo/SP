@@ -205,9 +205,20 @@ gcc primes.c -o primes
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
-void init() {
-    for (int i = 2; i <= 1000; i++)
+int stoi(char s[]) {
+    int len = strlen(s);
+    int num = 0;
+    for (int i = 0; i < len; i++) {
+        num *= 10;
+        num += s[i] - '0';
+    }
+    return num;
+}
+
+void init(int n) {
+    for (int i = 2; i <= n; i++)
         write(1, &i, sizeof(i));
 }
 
@@ -240,7 +251,7 @@ void sink() {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     int pd[2];
     pipe(pd);
     if (fork()) {
@@ -248,10 +259,10 @@ int main() {
         sink();
     } else {
         redirect (1, pd);
-        init();
+        init(stoi(argv[1]));
     }
     return 0;
 }
 ```
 
-![Screenshot from 2022-10-30 22-51-35](https://raw.githubusercontent.com/hjc-owo/hjc-owo.github.io/img/202210302252430.png)
+![Screenshot from 2022-11-07 16-54-08](https://raw.githubusercontent.com/hjc-owo/hjc-owo.github.io/img/202211071654916.png)
